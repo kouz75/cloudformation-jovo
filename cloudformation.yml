@@ -31,7 +31,7 @@ Outputs:
 Resources:
   LambdaTrustRole:
     Type: AWS::IAM::Role
-    Description: Creating service role in IAM for AWS Lambda. Lambda function need to read/write to cloudwatch and to DynamoDB.
+    Description: Creating service role in IAM for AWS Lambda. Lambda function need to read/write to cloudwatch and to use DynamoDB.
     Properties:
       AssumeRolePolicyDocument:
         Statement:
