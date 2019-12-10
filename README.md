@@ -1,4 +1,4 @@
-[![AWS CloudFormation Stack](https://cdn-images-1.medium.com/max/2400/1*exfeKVoOehOPTYSIARGPZA.png)]
+![AWS CloudFormation Stack](https://cdn-images-1.medium.com/max/2400/1*exfeKVoOehOPTYSIARGPZA.png)
 
 
 Hello Word Jovo project integrate in AWS CloudFormation Stack.
