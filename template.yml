@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform:
+- AWS::Serverless-2016-10-31
+
+Parameters:
+  ProjectId:
+    Type: String
+
+Resources:
+  LambdaJovoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ['-', [!Ref 'ProjectId',"jovo"]]
+      Handler: index.handler
+      Runtime: nodejs12.x
+      MemorySize: 1024
+      Timeout: 10
+      AutoPublishAlias: v1
+      CodeUri: bundle/
+      Role: !Join ['', [ "arn:aws:iam::",!Ref 'AWS::AccountId',":role/Role-",!Ref 'ProjectId',"-Lambda"]]
+      Events:
+        WebHook:
+          Type: Api
+          Name: !Join ['-', [!Ref 'ProjectId',"api"]]
+          StageName: Prod
+          Properties:
+            Path: /
+            Method: any
+        AlexaSkillEvent:
+          Type: AlexaSkill
+#          Properties:
+#            SkillId: 'xxx'
+      Environment:
+        Variables:
+          NODE_ENV: prod
+      Tags:
+        SITE: !Ref 'ProjectId'
+
+  SessionTable:
+    Type: "AWS::DynamoDB::Table"
+    DeletionPolicy: Retain
+    Properties:
+      TableName: !Join ['-', [!Ref 'ProjectId',"session"]]
+      AttributeDefinitions:
+        -
+          AttributeName: "userId"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "userId"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      Tags:
+        - Key: SITE
+          Value: !Ref 'ProjectId'
